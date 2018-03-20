@@ -9,7 +9,7 @@ namespace GraphPlan.Test.Models
 {
 	public class Wellness : LocateableImplementation, IBuilding
 	{
-		public void Land(Player player)
+		public void Land(Farmer player)
 		{
 			if (player.Energy < 100)
 			{
@@ -25,9 +25,9 @@ namespace GraphPlan.Test.Models
 			this.Resources.Wood = 1000;
 		}
 
-		public void Land(Player player)
+		public void Land(Farmer player)
 		{
-			if(base.canCarry(player.R)
+			//if(base.canCarry(player.R)
 		}
 	}
 
@@ -35,6 +35,6 @@ namespace GraphPlan.Test.Models
 
 	public interface IBuilding : ILocateable
 	{
-		void Land(Player player);
+		void Land(Farmer player);
 	}
 }

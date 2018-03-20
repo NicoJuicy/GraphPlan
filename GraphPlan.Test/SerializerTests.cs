@@ -1,6 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GraphPlan;
+using GraphPlan.Models;
+
 namespace GraphPlan.Test
 {
 	[TestClass]
@@ -14,7 +16,7 @@ namespace GraphPlan.Test
 			var plan = new GraphPlan<string>();
 
 			var actions = plan.Prepare()
-				.AddState(new Models.PlanningAction<string>(
+				.AddState(new PlanningAction<string>(
 					name: "init",
 					preconditions: x => true,
 					effects: x =>
@@ -22,7 +24,7 @@ namespace GraphPlan.Test
 					   Console.WriteLine("Do init");
 				   }
 				))
-				.AddState(new Models.PlanningAction<string>(
+				.AddState(new PlanningAction<string>(
 					name: "execute",
 					preconditions: x => true,
 					effects: x =>
@@ -45,7 +47,7 @@ namespace GraphPlan.Test
 
 			var plan = new GraphPlan<string>();
 			var actions = plan.Prepare()
-				.AddState(new Models.PlanningAction<string>(
+				.AddState(new PlanningAction<string>(
 					name: "init",
 					preconditions: x => true,
 					effects: x =>
@@ -53,7 +55,7 @@ namespace GraphPlan.Test
 						Console.WriteLine("Do init");
 					}
 				))
-				.AddState(new Models.PlanningAction<string>(
+				.AddState(new PlanningAction<string>(
 					name: "execute",
 					preconditions: x => true,
 					effects: x =>

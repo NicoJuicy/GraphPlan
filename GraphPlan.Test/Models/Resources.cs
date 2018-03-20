@@ -16,6 +16,14 @@ namespace GraphPlan.Test.Models
 			Stone = 0;
 		}
 
+		public Resources(int Wood, int Gold, int Food, int Stone)
+		{
+			this.Wood = Wood;
+			this.Gold = Gold;
+			this.Food = Food;
+			this.Stone = Stone;
+		}
+
 		public int Wood { get; set; }
 		public int Gold { get; set; }
 		public int Food { get; set; }

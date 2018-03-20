@@ -8,24 +8,34 @@ using System.Threading.Tasks;
 namespace GraphPlan.Test.Models
 {
 
-	public class Farmer : FarmerImplementation, IPlayer
+	public abstract class Player : ResourceableImplementation, IPlayer
 	{
-		public Farmer()
+		public Player()
 		{
-			Energy = 100;
+			this.Energy = 100;
+			this.SetMaxResources(new Resources(0, 0, 0, 0));
 		}
 
 		public int Energy { get; set; }
 
 		public bool canGoTo(Coords coords)
 		{
-			
-			throw new NotImplementedException();
+
+			return Energy > 0;
 		}
 
 		public void GoTo(Coords coords)
 		{
-			throw new NotImplementedException();
+			Energy--;
+			this.CurrentCoords = coords; //Flyyyy
+		}
+	}
+
+	public class Farmer : Player
+	{
+		public Farmer() : base()
+		{
+			this.SetMaxResources(new Resources(100, 100, 100, 100));
 		}
 	}
 
