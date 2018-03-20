@@ -5,6 +5,8 @@ using GraphPlan.Models;
 
 namespace GraphPlan.Test
 {
+
+	//Insipiration by https://github.com/wmdmark/goap-js/blob/master/__test__/sim1.js
 	[TestClass]
 	public class SimpleGameTest
 	{
@@ -25,7 +27,10 @@ namespace GraphPlan.Test
 			var actions = plan.Prepare()
 				.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
 					name: "chopWood",
-					conditions: x => x.Player.hasAxe,
+					conditions: x =>
+					{
+						return x.Player.hasAxe;
+					},
 					effects: x =>
 					{
 						Console.WriteLine("action: Chopping wood");
