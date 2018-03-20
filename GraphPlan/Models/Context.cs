@@ -10,16 +10,16 @@ namespace GraphPlan.Models
 	{
 
 		private readonly GraphPlan<T> Base;
-		internal List<Models.PlanningAction<T>> PlanningActions { get; set; }
+		internal List<Models.IPlanningAction<T>> PlanningActions { get; set; }
 
 		public Context(GraphPlan<T> Base)
 		{
 			this.Base = Base;
-			this.PlanningActions = new List<Models.PlanningAction<T>>();
+			this.PlanningActions = new List<Models.IPlanningAction<T>>();
 		}
 	
 
-		public Context<T> AddState(Models.PlanningAction<T> State)
+		public Context<T> AddState(Models.IPlanningAction<T> State)
 		{
 			PlanningActions.Add(State);
 			return this;

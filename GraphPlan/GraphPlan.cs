@@ -39,7 +39,7 @@ namespace GraphPlan
 			return this;
 		}
 
-		public IEnumerable<IPlanningAction<T>> Solve(
+		public List<IPlanningAction<T>> Solve(
 			T initialState,
 			T goalState)
 		{
@@ -77,7 +77,7 @@ namespace GraphPlan
 				}
 			}
 
-			return Enumerable.Empty<IPlanningAction<T>>();
+			return Enumerable.Empty<IPlanningAction<T>>().ToList();
 
 		//	return Context.PlanningActions;//return all possible actions
 		}
@@ -96,18 +96,18 @@ namespace GraphPlan
 
 
 		#region serialization
-		public List<PlanningAction<T>> Load(string Path)
+		public List<IPlanningAction<T>> Load(string Path)
 		{
 			using (StreamReader sr = new StreamReader(Path))
 			{
 				return Load(sr.BaseStream);
 			}
 		}
-		public List<PlanningAction<T>> Load(Stream stream)
+		public List<IPlanningAction<T>> Load(Stream stream)
 		{
 
 			IFormatter bf = new BinaryFormatter(); //= this.OuputMethod == Enums.Output.Binary ? new BinaryFormatter() // : new XmlFormatter(typeof();// new IFormatter();
-			Context.PlanningActions = (List<PlanningAction<T>>)bf.Deserialize(stream);
+			Context.PlanningActions = (List<IPlanningAction<T>>)bf.Deserialize(stream);
 
 			return Context.PlanningActions;
 		}
@@ -118,14 +118,14 @@ namespace GraphPlan
 	{
 		#region serialization
 
-		public static IEnumerable<IPlanningAction<T>> Save<T>(this IEnumerable<IPlanningAction<T>> actions, string Path)
+		public static List<IPlanningAction<T>> Save<T>(this List<IPlanningAction<T>> actions, string Path)
 		{
 			using (StreamWriter sr = new StreamWriter(Path))
 			{
 				return actions.Save(sr.BaseStream);
 			}
 		}
-		public static IEnumerable<IPlanningAction<T>> Save<T>(this IEnumerable<IPlanningAction<T>> actions, Stream writer)
+		public static List<IPlanningAction<T>> Save<T>(this List<IPlanningAction<T>> actions, Stream writer)
 		{
 			BinaryFormatter bf = new BinaryFormatter();
 			bf.Serialize(writer, actions);
