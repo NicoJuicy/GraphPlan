@@ -48,8 +48,16 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Serializer.cs" />
-    <Compile Include="Basic.cs" />
+    <Compile Include="Logic\ILocateable.cs" />
+    <Compile Include="Logic\IMoveable.cs" />
+    <Compile Include="Logic\IResourceable.cs" />
+    <Compile Include="Models\Building.cs" />
+    <Compile Include="Models\Coords.cs" />
+    <Compile Include="Models\Player.cs" />
+    <Compile Include="GameTests.cs" />
+    <Compile Include="Models\Resources.cs" />
+    <Compile Include="SerializerTests.cs" />
+    <Compile Include="BasicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

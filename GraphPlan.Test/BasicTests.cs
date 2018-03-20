@@ -4,7 +4,7 @@ using GraphPlan;
 namespace GraphPlan.Test
 {
 	[TestClass]
-	public class Basic
+	public class BasicTests
 	{
 		[TestMethod]
 		public void GraphPlanTest()

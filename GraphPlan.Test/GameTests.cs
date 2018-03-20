@@ -4,7 +4,7 @@ using GraphPlan;
 namespace GraphPlan.Test
 {
 	[TestClass]
-	public class Serializer
+	public class SerializerTests
 	{
 		string file = System.IO.Path.GetTempFileName();
 
