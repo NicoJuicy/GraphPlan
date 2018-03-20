@@ -44,11 +44,12 @@
     <Compile Include="Enums\SearchMethod.cs" />
     <Compile Include="GraphPlan.cs" />
     <Compile Include="Models\Context.cs" />
+    <Compile Include="Models\Graph.cs" />
     <Compile Include="Models\PlanningAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solvers\IPrioritized.cs" />
+    <Compile Include="Solvers\PrioritizedQueue.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Solvers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

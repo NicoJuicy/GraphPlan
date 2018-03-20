@@ -16,7 +16,7 @@ namespace GraphPlan.Test
 			var actions = plan.Prepare()
 				.AddState(new PlanningAction<string>(
 					name: "init",
-					preconditions: x => true,
+					conditions: x => true,
 					effects: x =>
 				   {
 					   Console.WriteLine("Do init");
@@ -24,7 +24,7 @@ namespace GraphPlan.Test
 				))
 				.AddState(new PlanningAction<string>(
 					name: "execute",
-					preconditions: x => true,
+					conditions: x => true,
 					effects: x =>
 					{
 						Console.WriteLine("Do Execute");

@@ -15,6 +15,7 @@ namespace GraphPlan.Test.Logic
 		{
 			return this.CurrentCoords;
 		}
+		
 	}
 
 	public interface ILocateable

@@ -1,4 +1,5 @@
 ﻿using GraphPlan.Models;
+using GraphPlan.Solvers;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,7 +14,6 @@ namespace GraphPlan
 	public class GraphPlan<T>
 	{
 		private Enums.SearchMethod SearchMethod { get; set; }
-		//private Enums.Output OuputMethod {get;set;}
 		private Context<T> Context { get; set; }
 
 		//Constructor
@@ -21,14 +21,13 @@ namespace GraphPlan
 		{
 
 			this.SearchMethod = Enums.SearchMethod.BreathFirst;
-			//this.OuputMethod = Enums.Output.Binary;
+
 
 			Context = new Context<T>(this);
 		}
 
 		public Context<T> Prepare()
 		{
-			//Context.GraphPlan = this;
 			return Context;
 		}
 
@@ -40,22 +39,63 @@ namespace GraphPlan
 			return this;
 		}
 
-		//public GraphPlan<T> SetSerializationType(Enums.Output OutputMethod )
-		//{
-		//	this.OuputMethod = OutputMethod;
-		//	return this;
-		//}
-
-		public List<PlanningAction<T>> Solve(
+		public IEnumerable<IPlanningAction<T>> Solve(
 			T initialState,
-			T targetState)
+			T goalState)
 		{
+			var visitedStates = new HashSet<T>() { initialState };
+			var unvisitedPaths = UnvisitedPathes<Path<IPlanningAction<T>>>();
 
-			return Context.PlanningActions;//new List<PlanningAction<T>>(Context.);
+			var actions = Context.PlanningActions;
+
+			var possibleActions = actions
+				.Where(el => el.CanExecute(initialState))
+				.Select(action => new Path<IPlanningAction<T>>(action));
+
+			foreach (var action in possibleActions)
+			{
+				unvisitedPaths.Add(0, action);
+			}
+
+			while (unvisitedPaths.HasElements)
+			{
+				var path = unvisitedPaths.Get();
+
+				var reachedByPath = path.Reverse().Aggregate(initialState, (current, action) => action.Execute(current));
+				if (visitedStates.Contains(reachedByPath)) continue;
+				//if (stateComparer.Equals(reachedByPath, goalState)) return path.Reverse();
+
+				visitedStates.Add(reachedByPath);
+
+				var plans = actions.Where(action => action.CanExecute(reachedByPath));
+
+				foreach (var action in plans)
+				{
+					var distance = 1;// stateComparer.Cost(action.Execute(reachedByPath), goalState);
+					var plan = path.AddChild(action, distance);
+					unvisitedPaths.Add(plan.Cost, plan);
+				}
+			}
+
+			return Enumerable.Empty<IPlanningAction<T>>();
+
+		//	return Context.PlanningActions;//return all possible actions
+		}
+
+		private IPrioritized<double, S> UnvisitedPathes<S>()
+		{
+			//switch (traverseMethod)
+			//{
+			//	case TraverseMethod.BreadthFirst:
+			return new PrioritizedQueue<double, S>();
+			//default:
+			//	return new PrioritizedStack<double, S>();
 		}
 
 
 
+
+		#region serialization
 		public List<PlanningAction<T>> Load(string Path)
 		{
 			using (StreamReader sr = new StreamReader(Path))
@@ -71,26 +111,31 @@ namespace GraphPlan
 
 			return Context.PlanningActions;
 		}
+		#endregion
 	}
 
 	public static class PlanningActionExtensions
 	{
-		public static List<PlanningAction<T>> Save<T>(this List<PlanningAction<T>> actions, string Path)
+		#region serialization
+
+		public static IEnumerable<IPlanningAction<T>> Save<T>(this IEnumerable<IPlanningAction<T>> actions, string Path)
 		{
 			using (StreamWriter sr = new StreamWriter(Path))
 			{
 				return actions.Save(sr.BaseStream);
 			}
 		}
-		public static List<PlanningAction<T>> Save<T>(this List<PlanningAction<T>> actions, Stream writer)
-		{ 
+		public static IEnumerable<IPlanningAction<T>> Save<T>(this IEnumerable<IPlanningAction<T>> actions, Stream writer)
+		{
 			BinaryFormatter bf = new BinaryFormatter();
 			bf.Serialize(writer, actions);
 
 			return actions;
 		}
 
-		public static List<PlanningAction<T>> PrintToConsole<T>(this List<PlanningAction<T>> actions)
+		#endregion
+
+		public static IEnumerable<IPlanningAction<T>> PrintToConsole<T>(this IEnumerable<IPlanningAction<T>> actions)
 		{
 			int i = 0;
 
@@ -104,7 +149,7 @@ namespace GraphPlan
 			return actions;
 		}
 
-		public static T Do<T>(this List<PlanningAction<T>> actions, T initalState)
+		public static T Do<T>(this IEnumerable<IPlanningAction<T>> actions, T initalState)
 		{
 			int i = 0;
 
