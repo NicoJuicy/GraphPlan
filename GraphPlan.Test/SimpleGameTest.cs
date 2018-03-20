@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GraphPlan;
 using GraphPlan.Models;
+using System.Diagnostics;
 
 namespace GraphPlan.Test
 {
@@ -10,19 +11,17 @@ namespace GraphPlan.Test
 	[TestClass]
 	public class SimpleGameTest
 	{
-		[TestMethod]
+        
+        [TestMethod]
 		public void TestSimpleGame()
 		{
 
-			var initState = new SimpleGame.SimpleGameState();
+            var initState = new SimpleGame.SimpleGameState();
 
 			var endState = new SimpleGame.SimpleGameState();
 			endState.Player.hasAxe = false;
 			endState.Player.Wood = 1;
-
-
-
-
+            
 			var plan = new GraphPlan<SimpleGame.SimpleGameState>();
 			var actions = plan.Prepare()
 				.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
@@ -34,6 +33,7 @@ namespace GraphPlan.Test
 					effects: x =>
 					{
 						Console.WriteLine("action: Chopping wood");
+                        Debug.WriteLine("action: Chopping wood");
 						x.Player.Wood++;
 					}
 				))
@@ -47,7 +47,8 @@ namespace GraphPlan.Test
 					{
 						x.Player.hasAxe = true;
 						Console.WriteLine("action: Get an axe");
-					}
+                        Debug.WriteLine("action: Get an axe");
+                    }
 				))
 				.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
 					name: "gatherWood",
@@ -56,7 +57,8 @@ namespace GraphPlan.Test
 					{
 						x.Player.Wood++;
 						Console.WriteLine("action: Gathering wood");
-					}))
+                        Debug.WriteLine("action: Gathering wood");
+                    }))
 				.Finish()
 				.Solve(initState, endState)
 				.Do(initState);

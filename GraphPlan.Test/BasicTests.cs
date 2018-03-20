@@ -2,14 +2,14 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GraphPlan;
 using GraphPlan.Models;
-
+using GraphPlan.Extensions;
 namespace GraphPlan.Test
 {
 	[TestClass]
 	public class BasicTests
 	{
 		[TestMethod]
-		public void GraphPlanTest()
+		public void BasicTest()
 		{
 			var plan = new GraphPlan<string>();
 
@@ -19,20 +19,21 @@ namespace GraphPlan.Test
 					conditions: x => true,
 					effects: x =>
 				   {
-					   Console.WriteLine("Do init");
+                       x = "init";
 				   }
 				))
 				.AddState(new PlanningAction<string>(
 					name: "execute",
-					conditions: x => true,
+					conditions: x => x == "init",
 					effects: x =>
 					{
-						Console.WriteLine("Do Execute");
+                        x = "finish";
 					}
 				)).Finish()
 				.Solve("init", "finish")
-				.Do("init");
-				//.PrintToConsole();
+                .PrintToConsole();
+				//.Do("init")
+				
 
 
 		}

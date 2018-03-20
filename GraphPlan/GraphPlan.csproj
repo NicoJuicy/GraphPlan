@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="Enums\Output.cs" />
     <Compile Include="Enums\SearchMethod.cs" />
+    <Compile Include="Extensions\PlanningActionExtensions.cs" />
     <Compile Include="GraphPlan.cs" />
     <Compile Include="Models\Context.cs" />
     <Compile Include="Models\Graph.cs" />

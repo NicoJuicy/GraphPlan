@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GraphPlan;
 using GraphPlan.Models;
-
+using GraphPlan.Extensions;
 namespace GraphPlan.Test
 {
     [TestClass]

@@ -11,165 +11,127 @@ using System.Threading.Tasks;
 
 namespace GraphPlan
 {
-	public class GraphPlan<T>
-	{
-		private Enums.SearchMethod SearchMethod { get; set; }
-		private Context<T> Context { get; set; }
+    public class GraphPlan<T>
+    {
+        private Enums.SearchMethod SearchMethod { get; set; }
+        private Context<T> Context { get; set; }
 
-		//Constructor
-		public GraphPlan()
-		{
+        //Constructor
+        public GraphPlan()
+        {
 
-			this.SearchMethod = Enums.SearchMethod.BreathFirst;
-
-
-			Context = new Context<T>(this);
-		}
-
-		public Context<T> Prepare()
-		{
-			return Context;
-		}
-
-		//Methods
-
-		public GraphPlan<T> SetSearchMethod(Enums.SearchMethod SearchMethod)
-		{
-			this.SearchMethod = SearchMethod;
-			return this;
-		}
-
-		public List<IPlanningAction<T>> Solve(
-			T initialState,
-			T goalState)
-		{
-			var visitedStates = new HashSet<T>() { initialState };
-			var unvisitedPaths = UnvisitedPathes<Path<IPlanningAction<T>>>();
-
-			var actions = Context.PlanningActions;
-
-			var possibleActions = actions
-				.Where(el => el.CanExecute(initialState))
-				.Select(action => new Path<IPlanningAction<T>>(action));
-
-			foreach (var action in possibleActions)
-			{
-				unvisitedPaths.Add(0, action);
-			}
-
-			while (unvisitedPaths.HasElements)
-			{
-				var path = unvisitedPaths.Get();
-
-				var reachedByPath = path.Reverse().Aggregate(initialState, (current, action) => action.Execute(current));
-				if (visitedStates.Contains(reachedByPath)) continue;
-				//if (stateComparer.Equals(reachedByPath, goalState)) return path.Reverse();
-
-				visitedStates.Add(reachedByPath);
-
-				var plans = actions.Where(action => action.CanExecute(reachedByPath));
-
-				foreach (var action in plans)
-				{
-					var distance = 1;// stateComparer.Cost(action.Execute(reachedByPath), goalState);
-					var plan = path.AddChild(action, distance);
-					unvisitedPaths.Add(plan.Cost, plan);
-				}
-			}
-
-			return Enumerable.Empty<IPlanningAction<T>>().ToList();
-
-		//	return Context.PlanningActions;//return all possible actions
-		}
-
-		private IPrioritized<double, S> UnvisitedPathes<S>()
-		{
-			//switch (traverseMethod)
-			//{
-			//	case TraverseMethod.BreadthFirst:
-			return new PrioritizedQueue<double, S>();
-			//default:
-			//	return new PrioritizedStack<double, S>();
-		}
+            this.SearchMethod = Enums.SearchMethod.BreathFirst;
 
 
+            Context = new Context<T>(this);
+        }
 
+        public Context<T> Prepare()
+        {
+            return Context;
+        }
 
-		#region serialization
-		public List<IPlanningAction<T>> Load(string Path)
-		{
-			using (StreamReader sr = new StreamReader(Path))
-			{
-				return Load(sr.BaseStream);
-			}
-		}
-		public List<IPlanningAction<T>> Load(Stream stream)
-		{
+        //Methods
 
-			IFormatter bf = new BinaryFormatter(); //= this.OuputMethod == Enums.Output.Binary ? new BinaryFormatter() // : new XmlFormatter(typeof();// new IFormatter();
-			Context.PlanningActions = (List<IPlanningAction<T>>)bf.Deserialize(stream);
+        public GraphPlan<T> SetSearchMethod(Enums.SearchMethod SearchMethod)
+        {
+            this.SearchMethod = SearchMethod;
+            return this;
+        }
 
-			return Context.PlanningActions;
-		}
-		#endregion
-	}
+        public List<IPlanningAction<T>> Solve(
+            T initialState,
+            T goalState)
+        {
+            var visitedStates = new HashSet<T>() { initialState };
+            var unvisitedPaths = UnvisitedPathes<Path<IPlanningAction<T>>>();
 
-	public static class PlanningActionExtensions
-	{
-		#region serialization
+            var actions = Context.PlanningActions;
 
-		public static List<IPlanningAction<T>> Save<T>(this List<IPlanningAction<T>> actions, string Path)
-		{
-			using (StreamWriter sr = new StreamWriter(Path))
-			{
-				return actions.Save(sr.BaseStream);
-			}
-		}
-		public static List<IPlanningAction<T>> Save<T>(this List<IPlanningAction<T>> actions, Stream writer)
-		{
-			BinaryFormatter bf = new BinaryFormatter();
-			bf.Serialize(writer, actions);
+            var possibleActions = actions
+                .Where(el => el.CanExecute(initialState))
+                .Select(action => new Path<IPlanningAction<T>>(action));
 
-			return actions;
-		}
+            foreach (var action in possibleActions)
+            {
+                unvisitedPaths.Add(0, action);
+            }
 
-		#endregion
+            while (unvisitedPaths.HasElements)
+            {
+                var path = unvisitedPaths.Get();
 
-		public static IEnumerable<IPlanningAction<T>> PrintToConsole<T>(this IEnumerable<IPlanningAction<T>> actions)
-		{
-			int i = 0;
+                var reachedByPath = path.Reverse().Aggregate(initialState, (current, action) => action.Execute(current));
+                if (visitedStates.Contains(reachedByPath)) continue;
+                //if (stateComparer.Equals(reachedByPath, goalState)) return path.Reverse();
 
-			Console.WriteLine($"{actions.Count()} step(s) suggested");
-			foreach (var action in actions)
-			{
-				i++;
-				Console.WriteLine($"Step {i}: {action.name}");
-			}
+                visitedStates.Add(reachedByPath);
 
-			return actions;
-		}
+                var plans = actions.Where(action => action.CanExecute(reachedByPath));
 
-		public static T Do<T>(this IEnumerable<IPlanningAction<T>> actions, T initalState)
-		{
-			int i = 0;
+                foreach (var action in plans)
+                {
+                    var distance = 1;// stateComparer.Cost(action.Execute(reachedByPath), goalState);
+                    var plan = path.AddChild(action, distance);
+                    unvisitedPaths.Add(plan.Cost, plan);
+                }
+            }
 
-			Console.WriteLine($"{actions.Count()} step(s) suggested");
+            return Enumerable.Empty<IPlanningAction<T>>().ToList();
 
-			T currentState = initalState;
-			foreach (var action in actions)
-			{
-				if (action.CanExecute(currentState))
-				{
-					currentState = action.Execute(currentState);
-				}
-			}
+            //	return Context.PlanningActions;//return all possible actions
+        }
 
-			return currentState; // is final state
-		}
-
-	}
+        private IPrioritized<double, S> UnvisitedPathes<S>()
+        {
+            //switch (traverseMethod)
+            //{
+            //	case TraverseMethod.BreadthFirst:
+            return new PrioritizedQueue<double, S>();
+            //default:
+            //	return new PrioritizedStack<double, S>();
+        }
 
 
 
 
+        #region serialization
+        public List<IPlanningAction<T>> Load(string Path)
+        {
+            using (StreamReader sr = new StreamReader(Path))
+            {
+                return Load(sr.BaseStream);
+            }
+        }
+        public List<IPlanningAction<T>> Load(Stream stream)
+        {
+
+            IFormatter bf = new BinaryFormatter(); //= this.OuputMethod == Enums.Output.Binary ? new BinaryFormatter() // : new XmlFormatter(typeof();// new IFormatter();
+            Context.PlanningActions = (List<IPlanningAction<T>>)bf.Deserialize(stream);
+
+            return Context.PlanningActions;
+        }
+        #endregion
+    }
+
+    public static class GraphPlanExtensions
+    {
+        public static T Do<T>(this List<IPlanningAction<T>> actions, T initalState)
+        {
+            int i = 0;
+
+            Console.WriteLine($"{actions.Count()} step(s) suggested");
+
+            T currentState = initalState;
+            foreach (var action in actions)
+            {
+                if (action.CanExecute(currentState))
+                {
+                    currentState = action.Execute(currentState);
+                }
+            }
+
+            return currentState; // is final state
+        }
+    }
 }
