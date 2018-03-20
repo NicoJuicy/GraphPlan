@@ -48,6 +48,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Serializer.cs" />
     <Compile Include="Basic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

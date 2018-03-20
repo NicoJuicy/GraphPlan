@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphPlan.Models
 {
+	[Serializable]
 	public class PlanningAction<T> //where T : ICloneable
 	{
 		public PlanningAction()
@@ -13,21 +14,24 @@ namespace GraphPlan.Models
 
 		}
 
-		public PlanningAction(string name, Predicate<T> validator, Action<T> executor)
+		public PlanningAction(string name, Predicate<T> preconditions, Action<T> effects)
 		{
 			this.name = name;
-			this.validator = validator;
-			this.executor = executor;
+			this.preconditions = preconditions;
+			this.effects = effects;
 		}
 
+	
 		public string name { get; private set; }
-		private readonly Predicate<T> validator;
-		private readonly Action<T> executor;
+
+		private readonly Predicate<T> preconditions;
+
+		private readonly Action<T> effects;
 
 		public bool CanExecute(T state)
 		{
 			
-			return validator(state);
+			return preconditions(state);
 			
 		}
 
@@ -35,7 +39,7 @@ namespace GraphPlan.Models
 		{
 			var newState = (T)state; //should be copied as value
 			//T newState = (T)state.Clone();
-			executor(newState);
+			effects(newState);
 			return newState;
 		}
 

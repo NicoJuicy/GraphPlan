@@ -7,21 +7,30 @@ namespace GraphPlan.Test
 	public class Basic
 	{
 		[TestMethod]
-		public void TestMethod1()
+		public void GraphPlanTest()
 		{
 			var plan = new GraphPlan<string>();
 
 			var actions = plan.Prepare()
 				.AddState(new Models.PlanningAction<string>(
 					name: "init",
-					executor: x =>
+					preconditions: x => true,
+					effects: x =>
 				   {
-					   Console.WriteLine("init");
-				   },
-					validator: x => true
+					   Console.WriteLine("Do init");
+				   }
+				))
+				.AddState(new Models.PlanningAction<string>(
+					name: "execute",
+					preconditions: x => true,
+					effects: x =>
+					{
+						Console.WriteLine("Do Execute");
+					}
 				)).Finish()
 				.Solve("init", "finish")
-				.PrintToConsole();
+				.Do("init");
+				//.PrintToConsole();
 
 
 		}
