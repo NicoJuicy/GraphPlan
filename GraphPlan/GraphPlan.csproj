@@ -51,6 +51,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solvers\IPrioritized.cs" />
     <Compile Include="Solvers\PrioritizedQueue.cs" />
+    <Compile Include="Solvers\PrioritizedStack.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="State\" />

@@ -34,6 +34,10 @@ namespace GraphPlan.Test.SimpleState
         public int GetHashCode(State state)
         {
             var hash = 127;
+
+            //a ^= b is shorthand for a = a ^ b
+            //^ is bitwise XOR
+            //0 ^ 0 = 0; 1 ^ 0 = 1; 0 ^ 1 = 1; 1 ^ 1 = 0
             foreach (var parameter in state)
             {
                 hash ^= parameter.Key.GetHashCode();

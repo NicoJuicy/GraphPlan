@@ -9,10 +9,10 @@ using GraphPlan.Extensions;
 namespace GraphPlan.Test
 {
     [TestClass]
-    public class StateComparerTest
+    public class StateComparerTest : BaseContext
     {
         [TestMethod]
-        public void SimpleStateComparer()
+        public void SimpleState_hanoi_tower_solver_test()
         {
             //A1 1  B1 |  C1 |
             //A2 2  B2 |  C2 |
@@ -76,9 +76,52 @@ namespace GraphPlan.Test
 
             var plan = new GraphPlan<State>()
                 .SetComparer(new StateComparer())
-                .Prepare().AddStates(planningActions).Finish()
+                .SetSearchMethod(Enums.SearchMethod.DepthFirst)
+                .Prepare(planningActions)
                 .Solve(initialState, goalState)
                 .PrintToConsole();
+
+        }
+
+        [TestMethod]
+        public void SimpleState_WhenGoalReachable()
+        {
+            var planner = BaseContext.CreatePlanner();
+            var initialState = new State
+            {
+                {"1" , 3},
+                {"2" , 6},
+            };
+            var goalState = new State
+            {
+                {"1" , 5},
+                {"2" , 4},
+            };
+
+            var plan = planner.Solve(initialState, goalState);
+
+            Assert.AreEqual(plan.Count(), 2,"Plan should contain 2 steps");
+
+        }
+
+        [TestMethod]
+        public void SimpleState_when_goal_unreachable()
+        {
+            var planner = BaseContext.CreatePlanner();
+            var initialState = new State
+            {
+                {"1" , 3},
+                {"2" , 6},
+            };
+            var goalState = new State
+            {
+                {"1" , 5},
+                {"2" , 5},
+            };
+
+            var plan = planner.Solve(initialState, goalState);
+
+            Assert.AreEqual(plan.Count(), 0, "Plan should be empty 2 steps");
 
         }
 
@@ -122,7 +165,7 @@ namespace GraphPlan.Test
 
     }
 
-    internal class BaseContext
+    public class BaseContext
     {
         protected static GraphPlan<State> CreatePlanner()
         {

@@ -20,15 +20,21 @@ namespace GraphPlan
         public GraphPlan()
         {
 
-            this.SearchMethod = Enums.SearchMethod.BreathFirst;
+            this.SearchMethod = Enums.SearchMethod.BreadthFirst;
 
 
-            Context = new Context<T>(this);
+            this.Context = new Context<T>(this);
         }
 
         public Context<T> Prepare()
         {
-            return Context;
+            return this.Context;
+        }
+
+        public GraphPlan<T> Prepare(List<Models.IPlanningAction<T>> States)
+        {
+            this.Context.AddStates(States);
+            return this;
         }
 
         //Methods
@@ -95,12 +101,15 @@ namespace GraphPlan
 
         private IPrioritized<double, S> UnvisitedPathes<S>()
         {
-            //switch (traverseMethod)
-            //{
-            //	case TraverseMethod.BreadthFirst:
-            return new PrioritizedQueue<double, S>();
-            //default:
-            //	return new PrioritizedStack<double, S>();
+            switch (this.SearchMethod)
+            {
+                case Enums.SearchMethod.BreadthFirst:
+                    return new PrioritizedQueue<double, S>();
+                case Enums.SearchMethod.DepthFirst:
+                    return new PrioritizedStack<double, S>();
+                default:
+                    return new PrioritizedQueue<double, S>();
+            }
         }
 
         #region serialization

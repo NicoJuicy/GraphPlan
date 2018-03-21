@@ -8,7 +8,7 @@ namespace GraphPlan.Enums
 {
 	public enum SearchMethod
 	{
-		BreathFirst,
+        BreadthFirst,
 		DepthFirst,
 		ASearch
 	}
