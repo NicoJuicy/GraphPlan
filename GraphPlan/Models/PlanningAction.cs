@@ -16,7 +16,7 @@ namespace GraphPlan.Models
 	}
 
 	[Serializable]
-	public class PlanningAction<T> : IPlanningAction<T> //where T : ICloneable
+	public class PlanningAction<T> : IPlanningAction<T> where T : ICloneable
 	{
 		public PlanningAction()
 		{
@@ -46,8 +46,7 @@ namespace GraphPlan.Models
 
 		public T Execute(T state)
 		{
-			var newState = (T)state; //should be copied as value
-									 //T newState = (T)state.Clone();
+			var newState = (T)state.Clone(); 
 			effects(newState);
 			return newState;
 		}

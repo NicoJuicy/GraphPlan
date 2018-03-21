@@ -25,7 +25,14 @@ namespace GraphPlan.Models
 			return this;
 		}
 
-		public GraphPlan<T> Finish()
+        public Context<T> AddStates(List<Models.IPlanningAction<T>> States)
+        {
+            PlanningActions.AddRange(States);
+            return this;
+        }
+
+
+        public GraphPlan<T> Finish()
 		{
 			return Base;
 		}

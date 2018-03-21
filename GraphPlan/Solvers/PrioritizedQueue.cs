@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace GraphPlan.Solvers
 {
-	//BreadthFirst
-	internal class PrioritizedQueue<K, V> : IPrioritized<K, V>
+    //BreadthFirst
+    //alternative https://github.com/luxkun/ReGoap/blob/master/ReGoap/Planner/AStar.cs 
+    internal class PrioritizedQueue<K, V> : IPrioritized<K, V>
 	{
 		private readonly SortedDictionary<K, Queue<V>> queues = new SortedDictionary<K, Queue<V>>();
 

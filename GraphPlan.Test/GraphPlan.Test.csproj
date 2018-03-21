@@ -53,6 +53,8 @@
     <Compile Include="BasicTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleGame\Logic.cs" />
+    <Compile Include="StateComparerTest.cs" />
+    <Compile Include="SimpleState\StateComparer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -15,7 +15,7 @@ namespace GraphPlan
     {
         private Enums.SearchMethod SearchMethod { get; set; }
         private Context<T> Context { get; set; }
-
+        private IPlanningStateComparer<T> stateComparer { get; set; }
         //Constructor
         public GraphPlan()
         {
@@ -38,6 +38,14 @@ namespace GraphPlan
             this.SearchMethod = SearchMethod;
             return this;
         }
+        public GraphPlan<T> SetComparer(IPlanningStateComparer<T> stateComparer)
+        {
+            this.stateComparer = stateComparer;
+            return this;
+        }
+
+
+
 
         public List<IPlanningAction<T>> Solve(
             T initialState,
@@ -63,7 +71,10 @@ namespace GraphPlan
 
                 var reachedByPath = path.Reverse().Aggregate(initialState, (current, action) => action.Execute(current));
                 if (visitedStates.Contains(reachedByPath)) continue;
-                //if (stateComparer.Equals(reachedByPath, goalState)) return path.Reverse();
+                if (stateComparer.Equals(reachedByPath, goalState))
+                {
+                    return path.Reverse().ToList();
+                }
 
                 visitedStates.Add(reachedByPath);
 
@@ -71,7 +82,7 @@ namespace GraphPlan
 
                 foreach (var action in plans)
                 {
-                    var distance = 1;// stateComparer.Cost(action.Execute(reachedByPath), goalState);
+                    var distance = stateComparer.Distance(action.Execute(reachedByPath), goalState);
                     var plan = path.AddChild(action, distance);
                     unvisitedPaths.Add(plan.Cost, plan);
                 }
@@ -91,9 +102,6 @@ namespace GraphPlan
             //default:
             //	return new PrioritizedStack<double, S>();
         }
-
-
-
 
         #region serialization
         public List<IPlanningAction<T>> Load(string Path)
@@ -118,7 +126,6 @@ namespace GraphPlan
     {
         public static T Do<T>(this List<IPlanningAction<T>> actions, T initalState)
         {
-            int i = 0;
 
             Console.WriteLine($"{actions.Count()} step(s) suggested");
 
