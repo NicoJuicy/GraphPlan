@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace GraphPlan
 {
+    //https://github.com/FoC-/GOAP/tree/master/src/Goap
     public class GraphPlan<T>
         //where T:ValueObject
     {
@@ -72,7 +73,7 @@ namespace GraphPlan
 
             var possibleActions = actions
                 .Where(el => el.CanExecute(initialState))
-                .Select(action => new Path<IPlanningAction<T>>(action));
+                .Select(action => new Path<IPlanningAction<T>>(action)).ToList();
 
             foreach (var action in possibleActions)
             {
@@ -87,12 +88,12 @@ namespace GraphPlan
                 if (visitedStates.Contains(reachedByPath)) continue;
                 if (stateComparer.Equals(reachedByPath, goalState))
                 {
-                    return path.Reverse().ToList();
+                    return path.Reverse().ToList(); //why reverse?
                 }
 
                 visitedStates.Add(reachedByPath);
 
-                var plans = actions.Where(action => action.CanExecute(reachedByPath));
+                var plans = actions.Where(action => action.CanExecute(reachedByPath)).ToList();
 
                 foreach (var action in plans)
                 {
@@ -101,8 +102,6 @@ namespace GraphPlan
                     unvisitedPaths.Add(plan.Cost, plan);
                 }
             }
-
-           // return Enumerable.Empty<IPlanningAction<T>>().ToList();
 
             return Context.PlanningActions;//return all possible actions
         }
@@ -145,7 +144,7 @@ namespace GraphPlan
         {
 
             Console.WriteLine($"{actions.Count()} step(s) suggested");
-
+            actions.ForEach(a => Console.WriteLine($"{a.name}"));
             T currentState = initalState;
             foreach (var action in actions)
             {

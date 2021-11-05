@@ -20,9 +20,11 @@ namespace GraphPlan.Test
 
 			var endState = new SimpleGame.SimpleGameState();
 			endState.Player.hasAxe = false;
-			endState.Player.Wood = 1;
+			endState.Player.Wood = 20;
+			endState.axeAvailable = false;
             
 			var plan = new GraphPlan<SimpleGame.SimpleGameState>();
+			plan.SetComparer(new GameStateComparer());
 			var actions = plan.Prepare()
 				.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
 					name: "chopWood",
@@ -32,9 +34,8 @@ namespace GraphPlan.Test
 					},
 					effects: x =>
 					{
-						Console.WriteLine("action: Chopping wood");
-                        Debug.WriteLine("action: Chopping wood");
 						x.Player.Wood++;
+					if (x.Player.axeLife >0) x.Player.axeLife--;
 					}
 				))
 				.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
@@ -46,24 +47,49 @@ namespace GraphPlan.Test
 					effects: x =>
 					{
 						x.Player.hasAxe = true;
-						Console.WriteLine("action: Get an axe");
-                        Debug.WriteLine("action: Get an axe");
+						x.axeAvailable = false;
                     }
 				))
-				.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
-					name: "gatherWood",
-					conditions: x => true,
-					effects: x =>
-					{
-						x.Player.Wood++;
-						Console.WriteLine("action: Gathering wood");
-                        Debug.WriteLine("action: Gathering wood");
-                    }))
-				.Finish()
+                .AddState(new PlanningAction<SimpleGame.SimpleGameState>(
+                    name: "createAxe",
+                    conditions: x =>
+                    {
+                        return x.Player.Wood >= 5;
+                    },
+                    effects: x =>
+                    {
+                        x.Player.hasAxe = true;
+                        x.Player.Wood -= 2;
+                    }
+                ))
+                //.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
+                //    name: "gatherWood",
+                //    conditions: x => true,
+                //    effects: x =>
+                //    {
+                //        x.Player.Wood++;
+                //    }))
+                .Finish()
 				.Solve(initState, endState)
 				.Do(initState);
 		}
 	}
+
+    public class GameStateComparer : IPlanningStateComparer<SimpleGame.SimpleGameState>
+    {
+		public double Distance(SimpleGame.SimpleGameState state1, SimpleGame.SimpleGameState state2) => (state1?.Player.Wood - state2?.Player.Wood) ?? 10;
+
+        public bool Equals(SimpleGame.SimpleGameState x, SimpleGame.SimpleGameState y)
+        {
+			return (x?.Player.Wood == y?.Player.Wood) ;
+            
+        }
+
+        public int GetHashCode(SimpleGame.SimpleGameState obj)
+        {
+			return obj.GetHashCode();
+        }
+    }
 
 
 }
