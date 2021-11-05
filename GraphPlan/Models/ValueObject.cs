@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphPlan.Models
 {
+    [Serializable]
     public abstract class ValueObject
     {
         protected static bool EqualOperator(ValueObject left, ValueObject right)
