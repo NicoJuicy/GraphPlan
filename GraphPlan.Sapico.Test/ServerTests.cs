@@ -20,7 +20,7 @@
         [TestInitialize]
         public void Init()
         {
-           
+
 
             var restoreServer = PlanningActions.ServerActions.Plan_RestoreServer();
             var server_online = PlanningActions.ServerActions.Plan_GoOnline();
@@ -29,15 +29,6 @@
             var actions = new IPlanningAction<Models.Server>[] { restoreServer, server_online, restoration };
 
             planner = new GraphPlan<Models.Server>(Enums.PlanningMethod.DepthFirst, actions, new ServerComparer());
-        }
-
-        internal class ServerComparer : GraphPlan.Comparer.ValueObjectComparer, IPlanningStateComparer<Models.Server>
-        {
-            public double Distance(Models.Server state1, Models.Server state2) => base.Distance(state1, state2);
-
-            public bool Equals(Models.Server x, Models.Server y) => x.ServerState == y.ServerState;
-
-            public int GetHashCode(Models.Server obj) => base.GetHashCode(obj);
         }
 
         [TestMethod]
@@ -56,6 +47,13 @@
             Assert.IsTrue(actions[2].name == "go_online");
         }
 
-      
+        internal class ServerComparer : GraphPlan.Comparer.ValueObjectComparer, IPlanningStateComparer<Models.Server>
+        {
+            public double Distance(Models.Server state1, Models.Server state2) => base.Distance(state1, state2);
+
+            public bool Equals(Models.Server x, Models.Server y) => x.ServerState == y.ServerState;
+
+            public int GetHashCode(Models.Server obj) => base.GetHashCode(obj);
+        }
     }
 }

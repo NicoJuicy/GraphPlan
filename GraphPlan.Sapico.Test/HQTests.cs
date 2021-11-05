@@ -1,29 +1,37 @@
-﻿using GraphPlan.Models;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphPlan.Sapico.Test
+﻿namespace GraphPlan.Sapico.Test
 {
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     [TestClass]
     public class HQTests
     {
+        internal Func<Models.HQState, Models.HQState> AtWork = (beginState) =>
+        {
+            var endState = (Models.HQState)beginState.Clone();
+
+            if (endState.Employees.Any(d => d.IsAtWork))
+            {
+                foreach (var workServer in endState.Servers.Where(el => el.Behaviour.HasFlag(Models.ServerBehaviour.WhenAtWork)))
+                {
+                    workServer.ServerState = Models.ServerState.On;
+                }
+
+            }
+            return endState;
+        };
+
         private GraphPlan<Models.HQState> planner;
 
         [TestInitialize]
         public void Init()
         {
-           
+
 
             var restoreServer = PlanningActions.ServerActions.Plan_RestoreServer();
             var server_online = PlanningActions.ServerActions.Plan_GoOnline();
-
-            //planner = new GraphPlan<Models.Server>(Enums.PlanningMethod.DepthFirst, new IPlanningAction<Models.Server>[] { restoreServer, server_online }.ToList(), new Comparer.ValueObjectComparer());
-
-            // planner.Prepare(new IPlanningAction<Models.Server>[] { restoreServer, server_online });
         }
 
         [TestMethod]
@@ -70,22 +78,5 @@ namespace GraphPlan.Sapico.Test
 
             string t = "";
         }
-
-
-        Func<Models.HQState, Models.HQState> AtWork = (beginState) =>
-        {
-            var endState = (Models.HQState)beginState.Clone();
-
-            if (endState.Employees.Any(d => d.IsAtWork))
-            {
-                foreach (var workServer in endState.Servers.Where(el => el.Behaviour.HasFlag(Models.ServerBehaviour.WhenAtWork)))
-                {
-                    workServer.ServerState = Models.ServerState.On;
-                }
-
-            }
-            return endState;
-        };
-
     }
 }

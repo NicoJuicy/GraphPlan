@@ -55,7 +55,6 @@
     <Compile Include="Comparer\HQStateComparer.cs" />
     <Compile Include="HQTests.cs" />
     <Compile Include="Models\HQState.cs" />
-    <Compile Include="PlanningActions\HQActions.cs" />
     <Compile Include="PlanningActions\ServerActions.cs" />
     <Compile Include="ServerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
