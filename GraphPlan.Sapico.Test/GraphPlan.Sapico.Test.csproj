@@ -52,6 +52,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Comparer\HQStateComparer.cs" />
     <Compile Include="HQTests.cs" />
     <Compile Include="Models\HQState.cs" />
     <Compile Include="PlanningActions\HQActions.cs" />

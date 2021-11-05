@@ -10,15 +10,33 @@
              name: "go_online",
              conditions: (s) =>
              {
-                 return s.ServerState == Models.ServerState.NotFound && !string.IsNullOrEmpty(s.snapshot_id);
+                 return s.ServerState == Models.ServerState.Off ;
              },
              effects: s =>
              {
-                 s.ServerState = Models.ServerState.Restoring;
+                 s.ServerState = Models.ServerState.On;
 
              }
              );
         }
+
+        public static PlanningAction<Models.Server> Plan_WaitingForRestoration()
+        {
+            return new PlanningAction<Models.Server>(
+             name: "restoring....",
+             conditions: (s) =>
+             {
+                 return s.ServerState == Models.ServerState.Restoring ;
+             },
+             effects: s =>
+             {
+                 s.ServerState = Models.ServerState.Off;
+
+             }
+             );
+        }
+
+
 
         public static PlanningAction<Models.Server> Plan_RestoreServer()
         {

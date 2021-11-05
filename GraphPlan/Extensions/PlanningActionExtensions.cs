@@ -1,36 +1,13 @@
-﻿using GraphPlan.Models;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphPlan.Extensions
+﻿namespace GraphPlan.Extensions
 {
+    using GraphPlan.Models;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public static class PlanningActionExtensions
     {
-        #region serialization
-
-        public static List<IPlanningAction<T>> Save<T>(this List<IPlanningAction<T>> actions, string Path)
-        {
-            using (StreamWriter sr = new StreamWriter(Path))
-            {
-                return actions.Save(sr.BaseStream);
-            }
-        }
-        public static List<IPlanningAction<T>> Save<T>(this List<IPlanningAction<T>> actions, Stream writer)
-        {
-            BinaryFormatter bf = new BinaryFormatter();
-            bf.Serialize(writer, actions);
-
-            return actions;
-        }
-
-        #endregion
-
-        public static List<IPlanningAction<T>> PrintToConsole<T>(this List<IPlanningAction<T>> actions)
+        public static IEnumerable<IPlanningAction<T>> PrintToConsole<T>(this IEnumerable<IPlanningAction<T>> actions)
         {
             int i = 0;
 
@@ -43,7 +20,5 @@ namespace GraphPlan.Extensions
 
             return actions;
         }
-
-        
     }
 }

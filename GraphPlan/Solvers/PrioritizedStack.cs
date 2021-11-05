@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphPlan.Solvers
+﻿namespace GraphPlan.Solvers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     internal class PrioritizedStack<K, V> : IPrioritized<K, V>
     {
         private readonly SortedDictionary<K, Stack<V>> stacks = new SortedDictionary<K, Stack<V>>();

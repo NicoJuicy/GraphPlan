@@ -41,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comparer\ValueObjectComparer.cs" />
-    <Compile Include="Enums\SearchMethod.cs" />
+    <Compile Include="Enums\PlanningMethod.cs" />
     <Compile Include="Extensions\PlanningActionExtensions.cs" />
     <Compile Include="GraphPlan.cs" />
     <Compile Include="Models\Context.cs" />

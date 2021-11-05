@@ -74,11 +74,8 @@ namespace GraphPlan.Test
             };
 
 
-            var plan = new GraphPlan<State>()
-                .SetComparer(new StateComparer())
-                .SetSearchMethod(Enums.SearchMethod.DepthFirst)
-                .Prepare(planningActions.ToArray())
-                .Solve(initialState, goalState)
+            var plan = new GraphPlan<State>(Enums.PlanningMethod.DepthFirst, planningActions.ToArray(), new StateComparer())
+                .MakePlan(initialState, goalState)
                 .PrintToConsole();
 
         }
@@ -98,7 +95,7 @@ namespace GraphPlan.Test
                 {"2" , 4},
             };
 
-            var plan = planner.Solve(initialState, goalState);
+            var plan = planner.MakePlan(initialState, goalState);
 
             Assert.AreEqual(plan.Count(), 2,"Plan should contain 2 steps");
 
@@ -119,7 +116,7 @@ namespace GraphPlan.Test
                 {"2" , 5},
             };
 
-            var plan = planner.Solve(initialState, goalState);
+            var plan = planner.MakePlan(initialState, goalState);
 
             Assert.AreEqual(plan.Count(), 0, "Plan should be empty 2 steps");
 
@@ -190,10 +187,7 @@ namespace GraphPlan.Test
                 };
             var stateComparer = new StateComparer();
 
-            return new GraphPlan<State>().Prepare()
-                .AddStates(planningActions.ToArray())
-                .Finish()
-                .SetComparer(stateComparer);
+            return new GraphPlan<State>(Enums.PlanningMethod.DepthFirst, planningActions.ToArray(), stateComparer);
         }
     }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphPlan.Enums
 {
-	public enum SearchMethod
+	public enum PlanningMethod
 	{
         BreadthFirst,
 		DepthFirst,

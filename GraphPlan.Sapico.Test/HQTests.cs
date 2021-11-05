@@ -16,10 +16,12 @@ namespace GraphPlan.Sapico.Test
         [TestInitialize]
         public void Init()
         {
-            planner = new GraphPlan<Models.HQState>();
+           
 
             var restoreServer = PlanningActions.ServerActions.Plan_RestoreServer();
             var server_online = PlanningActions.ServerActions.Plan_GoOnline();
+
+            //planner = new GraphPlan<Models.Server>(Enums.PlanningMethod.DepthFirst, new IPlanningAction<Models.Server>[] { restoreServer, server_online }.ToList(), new Comparer.ValueObjectComparer());
 
             // planner.Prepare(new IPlanningAction<Models.Server>[] { restoreServer, server_online });
         }
@@ -64,7 +66,7 @@ namespace GraphPlan.Sapico.Test
 
             var desiredEndState = AtWork(beginState);
 
-            var actions = planner.Solve(beginState, desiredEndState);
+            var actions = planner.MakePlan(beginState, desiredEndState);
 
             string t = "";
         }

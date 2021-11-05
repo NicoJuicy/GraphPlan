@@ -1,59 +1,52 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GraphPlan.Models
+﻿namespace GraphPlan.Models
 {
+    using System;
 
-	public interface IPlanningAction<T>
-	{
+    public interface IPlanningAction<T>
+    {
+        string name { get; }
 
-		string name { get; }
-		bool CanExecute(T state);
-		T Execute(T state);
-	}
+        bool CanExecute(T state);
 
-	[Serializable]
-	public class PlanningAction<T> : IPlanningAction<T> where T : ICloneable
-	{
-		public PlanningAction()
-		{
+        T Execute(T state);
+    }
 
-		}
+    [Serializable]
+    public class PlanningAction<T> : IPlanningAction<T> where T : ICloneable
+    {
+        private readonly Predicate<T> conditions;
 
-		public PlanningAction(string name, Predicate<T> conditions, Action<T> effects)
-		{
-			this.name = name;
-			this.conditions = conditions;
-			this.effects = effects;
-		}
+        private readonly Action<T> effects;
 
+        public PlanningAction()
+        {
+        }
 
-		public string name { get; private set; }
+        public PlanningAction(string name, Predicate<T> conditions, Action<T> effects)
+        {
+            this.name = name;
+            this.conditions = conditions;
+            this.effects = effects;
+        }
 
-		private readonly Predicate<T> conditions;
+        public string name { get; private set; }
 
-		private readonly Action<T> effects;
+        public bool CanExecute(T state)
+        {
 
-		public bool CanExecute(T state)
-		{
+            return conditions(state);
+        }
 
-			return conditions(state);
+        public T Execute(T state)
+        {
+            var newState = (T)state.Clone();
+            effects(newState);
+            return newState;
+        }
 
-		}
-
-		public T Execute(T state)
-		{
-			var newState = (T)state.Clone(); 
-			effects(newState);
-			return newState;
-		}
-
-		public override string ToString()
-		{
-			return name;
-		}
-	}
+        public override string ToString()
+        {
+            return name;
+        }
+    }
 }
