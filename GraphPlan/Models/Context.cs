@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphPlan.Comparer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,10 @@ namespace GraphPlan.Models
 		public Context(GraphPlan<T> Base)
 		{
 			this.Base = Base;
+			if(typeof(T).BaseType == typeof(ValueObject))
+            {
+				this.Base.SetComparer((IPlanningStateComparer<T>)new ValueObjectComparer());
+            }
 			this.PlanningActions = new List<Models.IPlanningAction<T>>();
 		}
 	
@@ -25,7 +30,7 @@ namespace GraphPlan.Models
 			return this;
 		}
 
-        public Context<T> AddStates(List<Models.IPlanningAction<T>> States)
+        public Context<T> AddStates(Models.IPlanningAction<T>[] States)
         {
             PlanningActions.AddRange(States);
             return this;

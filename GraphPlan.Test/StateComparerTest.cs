@@ -77,7 +77,7 @@ namespace GraphPlan.Test
             var plan = new GraphPlan<State>()
                 .SetComparer(new StateComparer())
                 .SetSearchMethod(Enums.SearchMethod.DepthFirst)
-                .Prepare(planningActions)
+                .Prepare(planningActions.ToArray())
                 .Solve(initialState, goalState)
                 .PrintToConsole();
 
@@ -191,7 +191,7 @@ namespace GraphPlan.Test
             var stateComparer = new StateComparer();
 
             return new GraphPlan<State>().Prepare()
-                .AddStates(planningActions)
+                .AddStates(planningActions.ToArray())
                 .Finish()
                 .SetComparer(stateComparer);
         }

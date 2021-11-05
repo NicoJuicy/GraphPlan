@@ -1,4 +1,5 @@
-﻿using GraphPlan.Models;
+﻿using GraphPlan.Comparer;
+using GraphPlan.Models;
 using GraphPlan.Solvers;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,19 @@ using System.Threading.Tasks;
 namespace GraphPlan
 {
     public class GraphPlan<T>
+        //where T:ValueObject
     {
         private Enums.SearchMethod SearchMethod { get; set; }
         private Context<T> Context { get; set; }
         private IPlanningStateComparer<T> stateComparer { get; set; }
+
+      
+
         //Constructor
         public GraphPlan()
         {
 
             this.SearchMethod = Enums.SearchMethod.BreadthFirst;
-
 
             this.Context = new Context<T>(this);
         }
@@ -31,7 +35,7 @@ namespace GraphPlan
             return this.Context;
         }
 
-        public GraphPlan<T> Prepare(List<Models.IPlanningAction<T>> States)
+        public GraphPlan<T> Prepare(Models.IPlanningAction<T>[] States)
         {
             this.Context.AddStates(States);
             return this;
@@ -50,6 +54,10 @@ namespace GraphPlan
             return this;
         }
 
+        //internal void SetComparer(ValueObjectComparer valueObjectComparer)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
 
 
@@ -94,9 +102,9 @@ namespace GraphPlan
                 }
             }
 
-            return Enumerable.Empty<IPlanningAction<T>>().ToList();
+           // return Enumerable.Empty<IPlanningAction<T>>().ToList();
 
-            //	return Context.PlanningActions;//return all possible actions
+            return Context.PlanningActions;//return all possible actions
         }
 
         private IPrioritized<double, S> UnvisitedPathes<S>()

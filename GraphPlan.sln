@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphPlan", "GraphPlan\GraphPlan.csproj", "{0CFF2B7B-32AB-460F-BC82-138BFDEFFE47}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphPlan.Test", "GraphPlan.Test\GraphPlan.Test.csproj", "{A8334D88-86AB-4888-A649-03F30FFBCF4E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphPlan.Sapico.Test", "GraphPlan.Sapico.Test\GraphPlan.Sapico.Test.csproj", "{FE4C8A60-E810-434B-AFB5-2AAE60B0DD1C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A8334D88-86AB-4888-A649-03F30FFBCF4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8334D88-86AB-4888-A649-03F30FFBCF4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8334D88-86AB-4888-A649-03F30FFBCF4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4C8A60-E810-434B-AFB5-2AAE60B0DD1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4C8A60-E810-434B-AFB5-2AAE60B0DD1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4C8A60-E810-434B-AFB5-2AAE60B0DD1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4C8A60-E810-434B-AFB5-2AAE60B0DD1C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

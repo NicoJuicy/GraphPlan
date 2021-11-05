@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\Output.cs" />
+    <Compile Include="Comparer\ValueObjectComparer.cs" />
     <Compile Include="Enums\SearchMethod.cs" />
     <Compile Include="Extensions\PlanningActionExtensions.cs" />
     <Compile Include="GraphPlan.cs" />
@@ -48,6 +48,7 @@
     <Compile Include="Models\Path.cs" />
     <Compile Include="Models\PlanningAction.cs" />
     <Compile Include="Models\StateComparer.cs" />
+    <Compile Include="Models\ValueObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solvers\IPrioritized.cs" />
     <Compile Include="Solvers\PrioritizedQueue.cs" />
