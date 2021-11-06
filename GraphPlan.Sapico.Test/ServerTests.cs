@@ -1,5 +1,6 @@
 ﻿namespace GraphPlan.Sapico.Test
 {
+    using GraphPlan.Extensions;
     using GraphPlan.Models;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using System.Linq;
@@ -40,7 +41,7 @@
             endServerState.ServerState = Models.ServerState.On;
 
             var actions = planner.MakePlan(beginServerState, endServerState).ToArray();
-
+            actions.PrintToConsole();
             Assert.AreEqual(actions.Count(), 3);
             Assert.IsTrue(actions[0].name == "restore_server");
             Assert.IsTrue(actions[1].name == "restoring....");

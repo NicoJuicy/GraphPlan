@@ -11,6 +11,33 @@ namespace GraphPlan.Test
     public class BasicTests
     {
         [TestMethod]
+        public void NoDice()
+        {
+            var planningActions = new List<PlanningAction<string>>()
+            {
+                new PlanningAction<string>(
+                    name: "init",
+                    conditions: x => true,
+                    effects: x =>
+                    {
+                        x = "init";
+                    }
+                ),
+                new PlanningAction<string>(
+                    name: "execute",
+                    conditions: x => x == "init",
+                    effects: x =>
+                    {
+                        x = "finish";
+                    }) };
+
+            var plan = new GraphPlan<string>(Enums.PlanningMethod.DepthFirst, planningActions, new StringComparerer());
+            var actions = plan.MakePlan("init", "init");
+            actions.PrintToConsole();
+        
+        }
+
+        [TestMethod]
         public void BasicTest()
         {
             var planningActions = new List<PlanningAction<string>>()

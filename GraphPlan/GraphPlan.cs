@@ -8,6 +8,7 @@
 
     //https://github.com/FoC-/GOAP/tree/master/src/Goap
     public class GraphPlan<T>
+        where T : class
     {
         private readonly IEnumerable<IPlanningAction<T>> planningActions;
 
@@ -27,6 +28,13 @@
             T initialState,
             T goalState)
         {
+
+            //Nothing to change, skip
+            if(initialState == goalState )
+            {
+                return Enumerable.Empty<IPlanningAction<T>>();
+            }
+
             var visitedStates = new HashSet<T>() { initialState };
             var unvisitedPaths = UnvisitedPathes<Path<IPlanningAction<T>>>();
 
@@ -49,7 +57,7 @@
                 if (visitedStates.Contains(reachedByPath)) continue;
                 if (planningStateComparer.Equals(reachedByPath, goalState))
                 {
-                    return path.Reverse().ToList(); //why reverse?
+                    return path.Reverse().ToList(); 
                 }
 
                 visitedStates.Add(reachedByPath);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GraphPlan.Test.SimpleState
 {
-    public class State : Dictionary<string, int>, ICloneable
+    public class State : Dictionary<string, int>, ICloneable //
     {
         public State()
         {

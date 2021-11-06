@@ -65,56 +65,6 @@ namespace GraphPlan.Test
             };
 
             var plan = new GraphPlan<SimpleGame.SimpleGameState>(Enums.PlanningMethod.DepthFirst, planningActions, new GameStateComparer());
-
-            //plan.SetComparer(new GameStateComparer());
-            //var actions = plan.Prepare()
-            //	.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
-            //		name: "chopWood",
-            //		conditions: x =>
-            //		{
-            //			return x.Player.hasAxe;
-            //		},
-            //		effects: x =>
-            //		{
-            //			x.Player.Wood++;
-            //		if (x.Player.axeLife >0) x.Player.axeLife--;
-            //		}
-            //	))
-            //	.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
-            //		name: "getAxe",
-            //		conditions: x =>
-            //		{
-            //			return !x.Player.hasAxe && x.axeAvailable;
-            //		},
-            //		effects: x =>
-            //		{
-            //			x.Player.hasAxe = true;
-            //			x.axeAvailable = false;
-            //                 }
-            //	))
-            //             .AddState(new PlanningAction<SimpleGame.SimpleGameState>(
-            //                 name: "createAxe",
-            //                 conditions: x =>
-            //                 {
-            //                     return x.Player.Wood >= 5;
-            //                 },
-            //                 effects: x =>
-            //                 {
-            //                     x.Player.hasAxe = true;
-            //                     x.Player.Wood -= 2;
-            //                 }
-            //             ))
-            //.AddState(new PlanningAction<SimpleGame.SimpleGameState>(
-            //    name: "gatherWood",
-            //    conditions: x => true,
-            //    effects: x =>
-            //    {
-            //        x.Player.Wood++;
-            //    }))
-            //            .Finish()
-            //.Solve(initState, endState)
-            //.Do(initState);
-
             var actions = plan.MakePlan(initState, endState);
             actions.Do(initState);
         }
