@@ -2,17 +2,19 @@
 {
     using System;
 
-    public interface IPlanningAction<T>
+    public interface IPlanningAction
     {
         string name { get; }
-
+    }
+    public interface IPlanningAction<T> : IPlanningAction
+    {
         bool CanExecute(T state);
 
         T Execute(T state);
     }
 
     [Serializable]
-    public class PlanningAction<T> : IPlanningAction<T> where T : ICloneable
+    public class PlanningAction<T> : IPlanningAction<T>,IPlanningAction where T : ICloneable
     {
         private readonly Predicate<T> conditions;
 
@@ -33,7 +35,6 @@
 
         public bool CanExecute(T state)
         {
-
             return conditions(state);
         }
 
